@@ -1,0 +1,3 @@
+Some code and resources of the paper 'Disease Category-specific Annotation of Non-coding Variants Using an Ensemble Learning Framework'.
+
+You could follow the R script in the CASAVA_toolkit folder to get the CASAVA scores for large amounts of genetic variants.
