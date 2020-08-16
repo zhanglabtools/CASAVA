@@ -1,3 +1,17 @@
 Some code and resources of the paper 'Disease Category-specific Annotation of Non-coding Variants Using an Ensemble Learning Framework'.
 
 You could follow the R script in the CASAVA_toolkit folder to get the CASAVA scores for large amounts of genetic variants.
+Whole-genome CASAVA scores can directly be downloaded from the release part on Github https://github.com/zhanglabtools/CASAVA/releases.
+
+The following four script may be helpful in reproducing the results:
+CASAVA_library.R contains the commonly used functions of this study. (Attention: XGBoost V0.82 is used in this implementation.)
+train_CASAVA_script.R is the script used to train CASAVA models.
+train_TrCASAVA_script.R is the script used to train disease-specific and TrCASAVA models.
+train_Zeroshot_script.R is the script used to train CASAVA models in the scenario of no disease-specific training data available.
+
+We also uploaded the variants, training-testing sets, and trained models for checking and reproducing the results on Baidu Cloud Disk.
+The ReadMe.docx would help you using these data.
+link：https://pan.baidu.com/s/1loDDBiLg6youoTkfS_AlCg 
+passwork：on5p 
+
+For any problem concerning the data and the code, please contact cz@amss.ac.cn. We will response to you as soon as possible.
