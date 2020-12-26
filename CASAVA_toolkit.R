@@ -4,11 +4,15 @@
 #
 # Any question please contact cz@amss.ac.cn, we will try to respond as soon as .
 #
-# Please following the steps to get CASAVA scores:
+# You could follow the steps to get CASAVA scores:
 # 1) Download CASAVA scores (RData files) and put them into a folder (CASAVAPath).
+# https://github.com/zhanglabtools/CASAVA/releases/tag/CASAVA
+
 # 2) Prepare the input file so that the first and second columns represent
 #    chromosomes and their locations of genetics variants in hg19.
-# 3) Change the name of input and output below.
+
+# 3) Change the name of input and output files below.
+
 # 4) Run this script
 
 # Output:
@@ -16,19 +20,21 @@
 # corresponding input variants. If the outputName is not null, then a CSV file 
 # will be saved for further use.
 ################################################################################
+# Here is the process of getting CASAVA score. The only dependency is data.table
+# package to speed-up the IO.
 require(data.table)
-CASAVAScore <- function(inputName, outputName, CASAVAPath, verbose = T) {
+CASAVAScore <- function(CASAVAPath, inputName, outputName = NULL, verbose = T) {
   
   bedFile <- data.table::fread(inputName, stringsAsFactors = FALSE)
   
   chromosome <- bedFile[[1]]
   chromosome <- tolower(chromosome)
   if (!any(startsWith(chromosome, 'chr'))) chromosome <- paste0('chr', chromosome)
-  
     
+  # CASAVA score is in 200-bp resolution and compressed
   location <- bedFile[[2]]
   location <- as.numeric(location)
-  location <- ceiling(location / 200) # CASAVA score is in 200-bp resolution and compressed
+  location <- ceiling(location / 200)
   
   result <- matrix(NA, nrow = nrow(bedFile), ncol = 24)
   for (chr in sprintf('chr%s', c(1:22, 'x'))) {
@@ -48,9 +54,19 @@ CASAVAScore <- function(inputName, outputName, CASAVAPath, verbose = T) {
   return(result)
 }
 ################################################################################
-# change the configuration according to your own and automatically get the result
-CASAVAPath <- 'K:/data/CASAVA/'
-inputName <- 'K:/project-four/TssCombine/GenerateSnp/data/variants/test_2.csv'
-outputName <- 'K:/temp.csv'
+# Here is how to get CASAVA score.
 
-result <- CASAVAScore(inputName, outputName, CASAVAPath)
+# 1) change the configuration according to your own.
+CASAVAPath <- 'K:/data/CASAVA/'  # The path where you locate the downloaded files
+inputName <- 'K:/input.csv'  # The location of input file.
+outputName <- 'K:/output.csv'  # The location of input file.
+
+# 2) When outputName is not NULL, write the results out.
+result <- CASAVAScore(CASAVAPath, inputName, outputName)
+
+# 3) When outputName is not NULL, only get the results in current R envorinment.
+# result <- CASAVAScore(CASAVAPath, inputName)
+
+# 4) Check the results
+print(colnames(result))
+print(head(result, n = 5))

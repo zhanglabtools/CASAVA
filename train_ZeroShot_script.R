@@ -1,9 +1,13 @@
 ################################################################################
-# last time modified: 2020/8/16
-# Set the train_file, test_file, and will give the results
-# Output = model + prediction + evaluation
+# last time modified: 2020/12/26
+# This script is used to train CASAVA models in the scenario of no disease-specific
+# trainin data available.
+# The inputs file have been uploaded to https://zenodo.org/record/4365899#.X-b3CdgzaUk.
+# See the folder /feature/ in 04_Disease_zero_shot_related.zip.
+
 # Remark: this is only the simulation results. Users should directly use
 # CASAVA pre-computed whole-genome CASAVA scores.
+################################################################################
 
 source('CASAVA_library.R')
 startTime <- format(Sys.time(), "%Y%m%d%H%M")

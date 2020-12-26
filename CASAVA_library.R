@@ -1,11 +1,11 @@
-# last time modified: 2020/8/16
+# last time modified: 2020/12/26
 # Author: Zhen Cao
 # Contact: cz@amss.ac.cn
 ################################################################################
 # Dependency
 library('data.table')
 library("dplyr")
-library("xgboost")  # Version 0.82
+library("xgboost")  # Version 0.82 is used during experiment
 library('mltools')
 library('ROCR')
 ################################################################################
@@ -112,6 +112,7 @@ PredictBagXGB <- function(model, feature, slice = 50000, nBooster = -1) {
   return(predictions)
 }
 ################################################################################
+# Calculate Accuracy, Precision, Recall, F1, MCC
 SimpleEval <- function(predict, actual_labels, cutoff = 0.5) {
   predict <- predict > cutoff
   accuracy <- sum(predict == actual_labels) / length(actual_labels)
@@ -123,14 +124,9 @@ SimpleEval <- function(predict, actual_labels, cutoff = 0.5) {
            F1 = fmeasure, MCC = mccValue))
 }
 ################################################################################
+# Calculate Accuracy, Precision, Recall, F1, MCC, AUROC, AUPRC
 MeasureAll <- function(raw_predict, actual_label, cutoff = 0.5) {
   
-  HelpFunction <- function(recall, precision) {
-    rec <- recall
-    prec <- precision
-    tresult <- sum((rec[2:length(rec)] - rec[2:length(rec) - 1]) * prec[-1])
-  }
-
   if (!is.list(raw_predict)) raw_predict <- list(raw_predict)
   if (!is.list(actual_label)) actual_label <- list(actual_label)
   
@@ -140,16 +136,11 @@ MeasureAll <- function(raw_predict, actual_label, cutoff = 0.5) {
                   cutoff = cutoff, 
                   SIMPLIFY = F)
   evals <- do.call(rbind, evals)
-
   pred <- ROCR::prediction(raw_predict, actual_label)
-  aucs <- ROCR::performance(pred, "auc")@y.values
-  aucs <- unlist(aucs)
-  
-  perf <- ROCR::performance(pred, "prec", "rec")
-  aupr <- mapply(HelpFunction, perf@x.values, perf@y.values)
-  aupr <- unlist(aupr)
+  auc <- ROCR::performance(pred, "auc")@y.values
+  aupr <- ROCR::performance(pred, "aucpr")@y.values
 
-  return(cbind(AUC = aucs, AUPR = aupr, evals))
+  return(cbind(AUC = unlist(auc), AUPR = unlist(aupr), evals))
 }
 ################################################################################
 helpFunc <- function(x, group) {

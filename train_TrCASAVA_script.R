@@ -1,7 +1,11 @@
 ################################################################################
-# last time modified: 2020/8/16
-# Set the train_file, test_file, and will give the results
-# Output = model + prediction + evaluation
+# last time modified: 2020/12/26
+# This script is used to train TrCASAVA models in our experiment.
+# The inputs file have been uploaded to https://zenodo.org/record/4365899#.X-b3CdgzaUk.
+# See the folder /feature/ in 03_Disease_and_TrCASAVA_related.zip.
+
+# Remark: It is recommend to use saved results in Zenodo.
+################################################################################
 
 source('CASAVA_library.R')
 startTime <- format(Sys.time(), "%Y%m%d%H%M")
