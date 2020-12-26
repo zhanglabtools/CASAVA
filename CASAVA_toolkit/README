@@ -1,3 +1,7 @@
 You could use the R script CASAVA_toolkit.R to get CASAVA scores for genetic variant.
 
-Here is the latest version of CASAVA toolkit.
+Here is the develop version of CASAVA toolkit. 
+
+For official version, please see the release page
+
+https://github.com/zhanglabtools/CASAVA/releases/tag/CASAVA.
